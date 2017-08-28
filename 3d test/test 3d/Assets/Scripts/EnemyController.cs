@@ -7,9 +7,13 @@ public class EnemyController : MonoBehaviour {
     private Rigidbody myRB;
     public float moveSpeed;
 
+    public int health;
+    protected int currentHealth;
+
     public PlayerController thePlayer;
 	// Use this for initialization
 	void Start () {
+        currentHealth = health;
         myRB = GetComponent<Rigidbody>();
         thePlayer = FindObjectOfType<PlayerController>();
 	}
@@ -21,5 +25,15 @@ public class EnemyController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         transform.LookAt(thePlayer.transform.position);
-	}
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+
+    }
+
+    public void hurtEnemy(int damage)
+    {
+        currentHealth -= damage;
+    }
 }

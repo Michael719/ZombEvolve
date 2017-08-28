@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour {
-
-    public float speed;
-    public float lifetime;
-    public int damageToGive;
+public class EnemyBulletController : BulletController {
 
 	// Use this for initialization
 	void Start () {
@@ -19,13 +15,17 @@ public class BulletController : MonoBehaviour {
 
         lifetime -= Time.deltaTime;
         if (lifetime <= 0) Destroy(gameObject);
-	}
+    }
 
     void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerHealthManager>().hurtPlayer(damageToGive);
+            Destroy(gameObject);
+        }
         if (other.gameObject.tag == "Enemy")
         {
-            other.gameObject.GetComponent<EnemyController>().hurtEnemy(damageToGive);
             Destroy(gameObject);
         }
     }
